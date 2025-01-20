@@ -10,10 +10,9 @@ Step-by-step instructions on how to set up the project locally.
 
 ```bash
 # Navigate to the project directory
-cd yourproject
 
-# Install dependencies
-npm install
+cd backend
+
 ```
 
 ## Create a Virtual Environment
