@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from app.models import model
 from app.schemas import PredictionRequest, PredictionResponse
 import numpy as np
@@ -8,6 +9,20 @@ app = FastAPI(
     description="API for making predictions using a pre-trained XGBoost model.",
     version="1.0.0"
 )
+
+origins = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/health", tags=["Health Check"])
 def health_check():
