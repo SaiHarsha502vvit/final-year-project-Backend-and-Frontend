@@ -24,12 +24,21 @@ app.add_middleware(
 )
 
 
+@app.get("/", tags=["Health Check of Server"])
+def application_health_check():
+    """
+    Health check endpoint to verify if the API is running.
+    """
+    return {" Message ": "Application is Running . You can start using the server"}
+
+
 @app.get("/health", tags=["Health Check"])
 def health_check():
     """
     Health check endpoint to verify if the API is running.
     """
     return {"status": "OK"}
+
 
 @app.post("/predict", response_model=PredictionResponse, tags=["Prediction"])
 def predict(request: PredictionRequest):
@@ -45,11 +54,13 @@ def predict(request: PredictionRequest):
 
         # Make prediction
         prediction = model.predict(input_features)[0]
-        proba = model.predict_proba(input_features)[0][1]  # Probability for class '1'
+        proba = model.predict_proba(input_features)[
+            0][1]  # Probability for class '1'
 
         return PredictionResponse(prediction=int(prediction), probability=float(proba))
 
     except ValueError as ve:
         raise HTTPException(status_code=400, detail=f"Input data error: {ve}")
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An error occurred during prediction.")
+        raise HTTPException(
+            status_code=500, detail="An error occurred during prediction.")
